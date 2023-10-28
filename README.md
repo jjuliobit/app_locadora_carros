@@ -10,7 +10,7 @@
 4) Baixas as dependencias de front end
 	npm install
 
-5)Produzindo o bundle de front end
+5) Produzindo o bundle de front end
 	npm run dev / npm run watch
 
 
