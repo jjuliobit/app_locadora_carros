@@ -4,10 +4,10 @@
 2) Instalar o pacote UI
 	composer require laravel/ui:^3.2.1
 
-3)Gerar o esquelo do projeto com Vue.JS e autencicação web nativa (scaffold / esqueleto)
+3) Gerar o esquelo do projeto com Vue.JS e autencicação web nativa (scaffold / esqueleto)
 	php artisan ui vue --auth
 
-4)Baixas as dependencias de front end
+4) Baixas as dependencias de front end
 	npm install
 
 5)Produzindo o bundle de front end
