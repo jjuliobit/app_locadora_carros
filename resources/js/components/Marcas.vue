@@ -210,6 +210,7 @@ export default {
             urlFiltro: '',
             nomeMarca: '',
             arquivoImagem: [],
+            imgSave: [],
             transacaoStatus: '',
             transacaoDetalhes: {},
             marcas: { data: [] },
@@ -320,12 +321,16 @@ export default {
                 })
         },
         carregarImagem(e) {
-           this.arquivoImagem = e.target.files
-
-
+            const file = this.arquivoImagem = e.target.files[0]
+            const fileSave = this.imgSave = e.target.files
+            if (file) {
+                const urlImagem = URL.createObjectURL(file);
+                this.arquivoImagem = urlImagem;
+            }
+            return fileSave;
         },
         salvar() {
-            console.log(this.nomeMarca, this.arquivoImagem[0])
+            // console.log(this.nomeMarca, this.arquivoImagem[0])
 
             let formData = new FormData();
             formData.append('nome', this.nomeMarca)
@@ -344,13 +349,15 @@ export default {
                         mensagem: 'ID do registro: ' + response.data.id
                     }
 
-                    console.log(response)
+                    // Limpar os campos após o sucesso
+                    this.nomeMarca = ''; // Limpa o campo de nome
+                    this.imgSave = []; // Limpa o campo de imagem
                 })
                 .catch(errors => {
                     this.transacaoStatus = 'erro'
                     this.transacaoDetalhes = {
-                        mensagem: errors.response.data.message,
-                        dados: errors.response.data.errors
+                        mensagem: errors.response.data.message || 'Erro desconhecido',
+                        dados: errors.response.data.errors || null
                     }
                     //errors.response.data.message
                 })

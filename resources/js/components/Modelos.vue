@@ -140,8 +140,8 @@
                     <div class="form-group">
                         <input-container-component titulo="Lugares" id="novoLugares" id-help="novoLugaresHelp"
                             texto-ajuda="Informe o lugar">
-                            <input type="text" class="form-control" id="novoLugaresHelp"
-                                aria-describedby="novoLugaresHelp" placeholder="Lugares" v-model="lugaresModelos">
+                            <input type="text" class="form-control" id="novoLugaresHelp" aria-describedby="novoLugaresHelp"
+                                placeholder="Lugares" v-model="lugaresModelos">
                         </input-container-component>
                         {{ lugaresModelos }}
                     </div>
@@ -248,7 +248,7 @@
 
             <template v-slot:conteudo>
                 <div class="form-group">
-                    <input-container-component titulo="Nome da modelo" id="atualizarNome" id-help="atualizarNomeHelp"
+                    <input-container-component titulo="Nome da modelo" id="atualizarNome" id-help="atualizarNomeHelp" 
                         texto-ajuda="Informe o nome da modelo">
                         <input type="text" class="form-control" id="atualizarNome" aria-describedby="atualizarNomeHelp"
                             placeholder="Nome da modelo" v-model="$store.state.item.nome">
@@ -256,18 +256,17 @@
                 </div>
 
                 <div class="form-group">
-                    <input-container-component titulo="Marca do ID" id="atualizarMarca_ID" id-help="atualizarMarca_IDHelp"
+                    <input-container-component titulo="Marca do ID" id="atualizarMarcaID" id-help="atualizarMarcaIDHelp"
                         texto-ajuda="Informe a marca do ID">
-                        <input type="text" class="form-control" id="atualizarMarca_ID"
-                            aria-describedby="atualizarMarca_IDHelp" placeholder="Marca do ID"
-                            v-model="$store.state.item.marca_id">
+                        <input type="text" class="form-control" id="atualizarMarcaID" aria-describedby="atualizarMarcaIDHelp" 
+                            placeholder="Marca do ID" v-model="$store.state.item.marca_id">
                     </input-container-component>
                 </div>
                 <div class="form-group">
-                    <input-container-component titulo="Numero portas" id="atualizarNumero_Portas"
-                        id-help="atualizarNumero_PortasHelp" texto-ajuda="Informe o numero portas">
-                        <input type="text" class="form-control" id="atualizarNumero_Portas"
-                            aria-describedby="atualizarNumero_PortasHelp" placeholder="Numero portas"
+                    <input-container-component titulo="Numero portas" id="atualizarNumeroPortas"
+                        id-help="atualizarNumeroPortasHelp" texto-ajuda="Informe o numero portas">
+                        <input type="text" class="form-control" id="atualizarNumeroPortas"
+                            aria-describedby="atualizarNumeroPortasHelp" placeholder="Numero portas"
                             v-model="$store.state.item.numero_portas">
                     </input-container-component>
                 </div>
@@ -280,14 +279,31 @@
                             v-model="$store.state.item.lugares">
                     </input-container-component>
                 </div>
+                <div class="form-group">
+                    <input-container-component titulo="Air Bag" id="atualizarAirBag" id-help="atualizarAirBagHelp"
+                        texto-ajuda="Informe as Air Bag">
+                        <input type="text" class="form-control" id="atualizarAirBag"
+                            aria-describedby="atualizarAirBagHelp" placeholder="Air Bag"
+                            v-model="$store.state.item.air_bag">
+                    </input-container-component>
+                </div>
+                <div class="form-group">
+                    <input-container-component titulo="Abs" id="atualizarAbs" id-help="atualizarAbsHelp"
+                        texto-ajuda="Informe Abs">
+                        <input type="text" class="form-control" id="atualizarAbs"
+                            aria-describedby="atualizarAbsHelp" placeholder="Abs"
+                            v-model="$store.state.item.abs">
+                    </input-container-component>
+                </div>
 
                 <div class="form-group">
                     <input-container-component titulo="Imagem" id="atualizarImagem" id-help="atualizarImagemHelp"
                         texto-ajuda="Selecione uma imagem no formato PNG">
                         <input type="file" class="form-control-file" id="atualizarImagem"
                             aria-describedby="atualizarImagemHelp" placeholder="Selecione uma imagem"
-                            @change="carregarImagem($event)">
+                            @change="carregarImagem($event)">    
                     </input-container-component>
+                    <img :src="arquivoImagem">
                 </div>
             </template>
 
@@ -308,13 +324,14 @@ export default {
             urlBase: 'http://localhost:8000/api/v1/modelo',
             urlPaginacao: '',
             urlFiltro: '',
-            nomeModelo: '',
             marcaIDModelo: '',
+            nomeModelo: '',
+            arquivoImagem: [],
+            imgSave: [],
             numerosPortas: '',
+            lugaresModelos: '',
             airBagModelos: '',
             absModelos: '',
-            lugaresModelos: '',
-            arquivoImagem: [],
             transacaoStatus: '',
             transacaoDetalhes: {},
             modelos: { data: [] },
@@ -323,16 +340,21 @@ export default {
     },
     methods: {
         atualizar() {
-
+            let url = this.urlBase + '/' + this.$store.state.item.id
+            
             let formData = new FormData();
             formData.append('_method', 'patch')
+            formData.append('marca_id', this.$store.state.item.marca_id);
             formData.append('nome', this.$store.state.item.nome)
+            formData.append('numero_portas', this.$store.state.item.numero_portas);
+            formData.append('lugares', this.$store.state.item.lugares);
+            formData.append('air_bag', this.$store.state.item.air_bag);
+            formData.append('abs', this.$store.state.item.abs);
 
-            if (this.arquivoImagem[0]) {
-                formData.append('imagem', this.arquivoImagem[0])
+            if (this.imgSave[0]) {
+                formData.append('imagem', this.imgSave[0])
             }
 
-            let url = this.urlBase + '/' + this.$store.state.item.id
 
 
             let config = {
@@ -345,8 +367,10 @@ export default {
                 .then(response => {
                     this.$store.state.transacao.status = 'sucesso'
                     this.$store.state.transacao.mensagem = 'Registro de modelo atualizado com sucesso'
+
                     //limpar o campo de seleção de arquivos
                     atualizarImagem.value = ''
+                
                     this.carregarLista()
                 })
                 .catch(errors => {
@@ -354,6 +378,9 @@ export default {
                     this.$store.state.transacao.mensagem = errors.response.data.message
                     this.$store.state.transacao.dados = errors.response.data.errors
                 })
+
+                console.log('Atualizando modelo com ID: ' + this.$store.state.item.id);
+
         },
         remover() {
             let confirmacao = confirm('Tem certeza que deseja remover esse registro?')
@@ -425,32 +452,26 @@ export default {
                 })
         },
         carregarImagem(e) {
+            const fileSave = this.imgSave = e.target.files
             const file = this.arquivoImagem = e.target.files[0]
-
             if (file) {
                 const urlImagem = URL.createObjectURL(file); // Cria uma URL temporária para o arquivo
                 this.arquivoImagem = urlImagem
-
             }
+
+            return fileSave;
 
         },
         salvar() {
-            console.log(this.marcaIDModelo, 
-            this.nomeModelo,
-            this.arquivoImagem,
-            this.numerosPortas,
-            this.lugaresModelos,
-            this.AirBagModelos,
-            this.AbsModelos
-            );
             let formData = new FormData();
-            formData.append('marca_id', this.marcaIDModelo)
-            formData.append('nome', this.nomeModelo)
-            formData.append('imagem', this.arquivoImagem[0])
-            formData.append('numero_porta', this.numerosPorta)
-            formData.append('lugares', this.lugaresModelos)
-            formData.append('air_bag', this.AirBagModelos)
-            formData.append('abs', this.AbsModelos)
+
+            formData.append('marca_id', this.marcaIDModelo);
+            formData.append('nome', this.nomeModelo);
+            formData.append('imagem', this.imgSave[0]);
+            formData.append('numero_portas', this.numerosPortas);
+            formData.append('lugares', this.lugaresModelos);
+            formData.append('air_bag', this.airBagModelos);
+            formData.append('abs', this.absModelos);
 
 
             let config = {
@@ -465,8 +486,8 @@ export default {
                     this.transacaoDetalhes = {
                         mensagem: 'ID do registro: ' + response.data.id
                     }
-
-                    console.log(response)
+                    this.carregarLista();
+                    // console.log(response)
                 })
                 .catch(errors => {
                     this.transacaoStatus = 'erro'
